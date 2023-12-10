@@ -4,7 +4,7 @@ import { StyledFormik,FormField,Error,AddButton } from './ContactForm.styled';
 
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../redux/contactSlice';
+import { addContact } from '../redux/contactsActions'
 
 
 const contactSchema = Yup.object().shape({
@@ -22,7 +22,7 @@ export const ContactForm = () => {
       }}
       validationSchema={contactSchema}
       onSubmit={(values, actions) => {
-        dispatch(addContact(values));
+      dispatch(addContact(values));
         actions.resetForm();
       }}
     >

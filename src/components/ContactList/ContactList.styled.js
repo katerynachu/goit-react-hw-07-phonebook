@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+
+export const Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;`
 export const List = styled.ul`
 width:370px;
 list-style:none;

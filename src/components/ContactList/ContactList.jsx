@@ -1,27 +1,57 @@
-import React from 'react';
-import { List, ListItem, DeleteButton } from './ContactList.styled';
+import React, { useEffect } from 'react';
+import { List, ListItem, DeleteButton, Wrapper } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeContact } from 'components/redux/contactSlice';
+import { deleteContact, fetchContacts } from '../redux/contactsActions';
+import { selectShowContacts, selectError, selectIsLoading } from 'components/redux/selectors';
+import Loader from 'components/Loader/Loader';
 
 export const ContactList = () => {
-  const contacts = useSelector(state => state.contacts.contacts);
-  const filter = useSelector(state => state.contacts.filteredContacts);
-
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
   const dispatch = useDispatch();
+  const show = useSelector(selectShowContacts);
 
-  const show = filter.length > 0 ? filter : contacts;
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const handleDeleteContact = (contactId) => {
+    dispatch(deleteContact(contactId));
+  };
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return (
+      <Wrapper>
+        <p>Error: {error}</p>
+      </Wrapper>
+    );
+  }
+
+  if (show.length === 0) {
+    return (
+      <Wrapper>
+        <p>No contacts found.</p>
+      </Wrapper>
+    );
+  }
 
   return (
-    
-    <List>
-      {show.map(contact => (
-        <ListItem key={contact.id}>
-          {contact.name} : {contact.number}
-          <DeleteButton onClick={() => dispatch(removeContact(contact.id))}>
-            delete
-          </DeleteButton>
-        </ListItem>
-      ))}
-    </List>
+    <Wrapper>
+      <List>
+        {show.map((contact) => (
+          <ListItem key={contact.id}>
+            {contact.name} : {contact.number}
+            <DeleteButton onClick={() => handleDeleteContact(contact.id)}>
+              delete
+            </DeleteButton>
+          </ListItem>
+        ))}
+      </List>
+    </Wrapper>
   );
 };
+
+
