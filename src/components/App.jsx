@@ -4,6 +4,8 @@ import {ContactList} from './ContactList/ContactList'
 import {ContactForm } from './ContactForm/ContactForm';
 import { GlobalStyle } from './GlobalStyle/Globalstyle';
 import { Titleh1,Titleh2 } from './App.styled';
+import { Toaster } from 'react-hot-toast';
+
 
 
 
@@ -16,6 +18,7 @@ export const App = () => {
       <Titleh2>Contacts</Titleh2>
       <Filter />
       <ContactList />
+      <Toaster position="top-right" />
       <GlobalStyle />
     </div>
     );
